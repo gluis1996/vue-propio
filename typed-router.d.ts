@@ -23,6 +23,8 @@ declare module 'vue-router/auto-routes' {
     'autorize-auto': RouteRecordInfo<'autorize-auto', '/autorize/auto', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     'generar-ot-instalacion': RouteRecordInfo<'generar-ot-instalacion', '/generar_ot_instalacion', Record<never, never>, Record<never, never>>,
+    'generar-ot-instalacion-components-dialog-registro': RouteRecordInfo<'generar-ot-instalacion-components-dialog-registro', '/generar_ot_instalacion/components/dialogRegistro', Record<never, never>, Record<never, never>>,
+    'generar-ot-instalacion-components-tabla': RouteRecordInfo<'generar-ot-instalacion-components-tabla', '/generar_ot_instalacion/components/tabla', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
     'second-page': RouteRecordInfo<'second-page', '/second-page', Record<never, never>, Record<never, never>>,
   }

@@ -10,6 +10,8 @@ import '@styles/styles.scss'
 const app = createApp(App)
 
 
+
+
 // Register plugins
 registerPlugins(app)
 

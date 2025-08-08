@@ -54,11 +54,13 @@
 // }
 
 
+// src/plugins/1.router/index.js
 
 import { setupLayouts } from "virtual:generated-layouts"
 import { createRouter, createWebHistory } from "vue-router/auto"
 import { setupGuards } from "./guards"
 import { getAuth } from "firebase/auth"
+import setupInactivityLogout from "@/plugins/inactivity"
 
 function recursiveLayouts(route) {
   if (route.children) {
@@ -70,6 +72,7 @@ function recursiveLayouts(route) {
   return setupLayouts([route])[0]
 }
 
+// Creamos el router
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(to) {
@@ -102,9 +105,12 @@ const router = createRouter({
   ],
 })
 
-setupGuards(router)
-
+// 👇 Exporta la instancia del router por si la necesitas en otros lugares
 export { router }
-export default function (app) {
+
+// ✅ Esta función asegura que todo se configure correctamente con la app
+export default function setupRouter(app) {
   app.use(router)
+  setupGuards(router)
+  setupInactivityLogout(router) // ✅ Aquí el router ya está listo
 }
