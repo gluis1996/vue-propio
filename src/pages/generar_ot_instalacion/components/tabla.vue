@@ -35,6 +35,7 @@ const consuta_trabajos = async () => {
 onMounted(() => {
   consuta_trabajos()
 })
+
 </script>
 
 <template>

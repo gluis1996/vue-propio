@@ -13,7 +13,7 @@
 
                 <VRow>
                     <VCol>
-                        <VSelect density="compact" :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']"
+                        <VSelect v-model="sede" density="compact" :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']"
                             label="Sede" required>
                         </VSelect>
                     </VCol>
@@ -34,13 +34,13 @@
                 </VRow>
                 <VRow>
                     <VCol>
-                        <VTextField label="Abonado" density="compact"></VTextField>
+                        <VTextField v-model="abonado" label="Abonado" density="compact"></VTextField>
                     </VCol>
                     <VCol>
                         <VTextField label="Cod. Ppoe" density="compact" hint="1234@12345678"></VTextField>
                     </VCol>
                     <VCol>
-                        <VTextField label="Pon Sn 1" density="compact"></VTextField>
+                        <VTextField v-model="sn1" label="Pon Sn 1" density="compact" @keyup.enter="consultar_pon_sn()"></VTextField>
                     </VCol>
                     <VCol>
                         <VTextField label="Pon Sn 2" density="compact"></VTextField>
@@ -74,14 +74,20 @@
             </VCardText>
         </VCard>
     </VDialog>
+
+    <v-overlay v-model="cargandoPantalla" class="d-flex align-center justify-center" persistent>
+        <v-progress-circular indeterminate size="64" color="primary" />
+    </v-overlay>
 </template>
 
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue'
 import { VBtn, VRow } from 'vuetify/components'
 import { getAuth } from 'firebase/auth'
+import { $api } from '@/utils/api'
 const user = getAuth().currentUser
-const operador = ref(user?.email || 'Usuario desconocido') 
+const operador = ref(user?.email || 'Usuario desconocido')
+const cargandoPantalla = ref(false)
 //definimos variables para capturar los input del formulario
 const sede = ref('');
 const tipoAlta = ref('');
@@ -100,9 +106,32 @@ const oltid = ref('');
 const zona = ref('');
 const speed = ref('');
 
-const consultar_pon_sn = async () =>{
+const consultar_pon_sn = async () => {
     if (!sn1.value || !abonado.value || !sede.value) {
+        alert('Validar campos requeridos para la consulta')
+
+    }
+     cargandoPantalla.value = true;  // 🔄 Activa loading
+    try {
+        const response = await $api('instalacion/buscar-sn', {
+            method: "POST",
+            body: {
+                "pon_sn_1": sn1.value,
+                "sede": sede.value,
+                "cod_abonado": abonado.value
+            },
+            onResponseError({ response }) {
+                errors.value = response._data.errors
+            },
+        });
+
+        console.log(response);
         
+
+    } catch (error) {
+        console.error('❌ Error al consultar:', error.message);
+    } finally {
+        cargandoPantalla.value = false;  // ✅ Desactiva loading
     }
 };
 
