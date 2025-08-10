@@ -13,22 +13,32 @@
 
                 <VRow>
                     <VCol>
-                        <VSelect v-model="sede" density="compact" :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']"
+                        <VSelect 
+                            v-model="sede" 
+                            density="compact" 
+                            :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']" 
                             label="Sede" required>
                         </VSelect>
                     </VCol>
                     <VCol>
-                        <VSelect density="compact"
+                        <VSelect 
+                            density="compact"
                             :items="['alta nueva', 'migracion de EoC -> Fibra', 'migracion de plan', 'Cambio de Equipo']"
                             label="T. Alta" required>
                         </VSelect>
                     </VCol>
                     <VCol>
-                        <VSelect density="compact" :items="['Duo', 'Cable', 'Internet']" label="T. Servicio" required>
+                        <VSelect 
+                            density="compact" 
+                            :items="['Duo', 'Cable', 'Internet']" 
+                            label="T. Servicio" required>
                         </VSelect>
                     </VCol>
                     <VCol>
-                        <VSelect density="compact" :items="['Huawei', 'Simple']" label="T. Equipo" required>
+                        <VSelect 
+                            density="compact" 
+                            :items="['Huawei', 'Simple']" 
+                            label="T. Equipo" required>
                         </VSelect>
                     </VCol>
                 </VRow>
@@ -57,7 +67,8 @@
                         <VTextField label="Precinto" density="compact"></VTextField>
                     </VCol>
                     <VCol>
-                        <VTextField label="Speed" density="compact"></VTextField>
+                        <VSelect density="compact" :items="['50M', '100M', '200M', '300M', '400M', '500M', '600M', '700M', '800M', '900M', '1G', 'CATV']" label="Speed" required>
+                        </VSelect>
                     </VCol>
                     <VCol>
                         <VTextField label="Coordenadas" density="compact"></VTextField>
@@ -89,7 +100,7 @@ const user = getAuth().currentUser
 const operador = ref(user?.email || 'Usuario desconocido')
 const cargandoPantalla = ref(false)
 //definimos variables para capturar los input del formulario
-const sede = ref('');
+const sede = ref();
 const tipoAlta = ref('');
 const tipoServicio = ref('');
 const tipoEquipo = ref('');
