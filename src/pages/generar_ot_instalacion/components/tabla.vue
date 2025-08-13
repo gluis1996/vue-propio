@@ -25,7 +25,7 @@ const consuta_trabajos = async () => {
     console.log('Datos obtenidos:', response)
 
     // Asigna la data al array para mostrarla
-    desserts.value = response || []
+    desserts.value = Array.isArray(response) ? response : (response?.data || [])
   } catch (err) {
     console.error(err)
   }
@@ -63,7 +63,7 @@ onMounted(() => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in paginatedItems" :key="item.dessert">
+      <tr v-for="item in paginatedItems" :key="item.id">
         <td>{{ item.id }}</td>
         <td>{{ item.sede }}</td>
         <td>{{ item.tipo_alta }}</td>
