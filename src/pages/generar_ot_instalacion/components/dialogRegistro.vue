@@ -350,7 +350,10 @@ const registrarOnu = async () => {
         longitud: lng || '',
         estado: "realizado",
         comentario_tecnico: "",
-        operador: operador.value
+        operador: operador.value,
+        vlan : vlanSeleccionada.value,
+        speed : speed.value,
+        userppoe: ppoe.value,
     }
 
     if (consultaont) { //autorizamos en la olt
@@ -361,6 +364,7 @@ const registrarOnu = async () => {
         if (res.data.response_code === "success") {
             const res_bd = await registrar_en_bd(payloadBaseDatos); // registramos en la base de datos
             console.log('Base de datos response:', res_bd);
+            limpiarFormulario();
             emit('saved')                    // 👈 notifica éxito
             emit('update:modelValue', false) // 👈 cierra diálogo
         } else {
@@ -372,11 +376,11 @@ const registrarOnu = async () => {
         console.log(payloadBaseDatos);
         const res_bd = await registrar_en_bd(payloadBaseDatos)
         console.log('Base de datos response:', res_bd);
+        limpiarFormulario();
         emit('saved')                   // ✅ avisa al padre que ya guardó
         emit('update:modelValue', false) // ✅ cierra el diálogo
         cargandoPantalla.value = false;
     }
-
 
 }
 
@@ -411,6 +415,34 @@ const registrar_en_bd = async (payload) => {
 }
 
 
+const limpiarFormulario = () => {
+  sede.value = ''
+  tipoAlta.value = ''
+  tipoServicio.value = ''
+  tipoEquipo.value = ''
+  abonado.value = ''
+  ppoe.value = ''
+  sn1.value = ''
+  sn2.value = ''
+  caja.value = ''
+  borne.value = ''
+  precinto.value = ''
+  coordenadas.value = ''
+  pon.value = ''
+  olt_id.value = ''
+  tarjeta.value = ''
+  zona.value = ''
+  speed.value = ''
+  vlandisponibles.value = []
+  vlanSeleccionada.value = ''
+  pon_type.value = ''
+  consultaont = false
+  mostrarChips.value = false
+  mostrar_mensaje_error.value = false
+}
+
+
+
 
 
 
@@ -425,6 +457,16 @@ const emit = defineEmits(['update:modelValue', 'saved'])
 const dialogVisibleUpdate = (val) => {
     emit('update:modelValue', val)
 }
+
+
+
+
+
+
+
+
+
+
 </script>
 
 <style lang="scss">
