@@ -13,8 +13,8 @@
 
                 <VRow>
                     <VCol>
-                        <VSelect v-model="sede" density="compact" @update:model-value="autoselecionequipo"
-                            :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']" label="Sede" required>
+                        <VSelect v-model="sede" density="compact" @update:model-value="onSedeChange"
+                            :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña','huaycan']" label="Sede" required>
                         </VSelect>
                     </VCol>
                     <VCol>
@@ -189,17 +189,15 @@ const mostrarSn2 = computed(() => {
     return visible_sn2;
 })
 
-watch(mostrarSn2, visible_sn2 => { if (!visible_sn2) sn2.value = '' })
-
-const autoselecionequipo = computed(() => {
-    if (sede.value === 'comas') {
-        tipoEquipo.value = 'Simple';
-    } else if (sede.value === 'ñaña') {
-        tipoEquipo.value = 'Simple';
+const onSedeChange = (val) => {
+    sede.value = val
+    if (val === 'comas' || val === 'ñaña') {
+        tipoEquipo.value = 'Simple'
     } else {
-        tipoEquipo.value = null;
+        tipoEquipo.value = null
     }
-})
+}
+watch(mostrarSn2, visible_sn2 => { if (!visible_sn2) sn2.value = '' })
 
 const consultar_pon_sn = async () => {
     if (!sn1.value || !abonado.value || !sede.value) {
@@ -256,7 +254,6 @@ const alertpersonalizado = async (color, icono, mensaje, duracion = 3000) => {
 }
 
 const registrarOnu = async () => {
-
     let onutype = '';
     let on_mode = '';
     if (!sede.value || sede.value.trim() === '') {
@@ -307,8 +304,7 @@ const registrarOnu = async () => {
         alertpersonalizado('error', 'ri-error-warning-fill', 'No debe de estar vacio el sn del Vsol', 2000)
         mostrar_mensaje_error.value = true;
         return
-    }
-
+    } 
 
     if (tipoEquipo.value === 'Vsol') {
         on_mode = 'Bridging';

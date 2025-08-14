@@ -6,6 +6,16 @@ const currentPage = ref(1)
 const itemsPerPage = 10
 const desserts = ref([]) // ahora es dinámico
 const errors = ref(null)
+const loadings = ref({})
+
+const load = (id) => {
+  loadings.value[id] = true
+  setTimeout(() => {
+    loadings.value[id] = false
+  }, 3000)
+  console.log(id);
+  
+}
 
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -69,6 +79,7 @@ onMounted(() => {
         <th>estado</th>
         <th>fecha r.</th>
         <th>operador</th>
+        <th>acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -88,9 +99,40 @@ onMounted(() => {
         <td>{{ item.estado }}</td>
         <td>{{ formatFecha(item.fecha_registro) }}</td>
         <td>{{ item.operador }}</td>
+        <td>
+          <VBtn 
+            :loading="loadings[item.id]"
+            :disabled="loadings[item.id]"
+            color="info" @click="load(item.id)"
+            >
+            OzMap
+            <template #loader>
+              <span class="custom-loader">
+                <VIcon icon="ri-refresh-line" />
+              </span>
+            </template>
+          </VBtn>
+        </td>
       </tr>
     </tbody>
   </VTable>
 
   <VPagination v-model="currentPage" :length="totalPages" rounded="circle" />
 </template>
+
+<style scoped>
+.custom-loader {
+  display: flex;
+  animation: loader 1s infinite;
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

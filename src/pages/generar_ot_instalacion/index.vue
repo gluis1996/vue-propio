@@ -1,13 +1,11 @@
 <template>
     <div>
 
-        <VRow>
-            <VBtn 
-                variant="tonal" 
-                @click="dialogAbiertos = true">
-                Generar Orden
-            </VBtn>
-        </VRow>
+        <VBtn 
+            variant="tonal" 
+            @click="dialogAbiertos = true">
+            Generar Orden
+        </VBtn>
 
         <dialogoregistromanula 
             v-model="dialogAbiertos" 
