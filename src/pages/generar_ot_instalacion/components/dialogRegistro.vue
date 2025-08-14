@@ -13,7 +13,7 @@
 
                 <VRow>
                     <VCol>
-                        <VSelect v-model="sede" density="compact"
+                        <VSelect v-model="sede" density="compact" @update:model-value="autoselecionequipo"
                             :items="['cable peru', 'chosica', 'puente piedra', 'comas', 'ñaña']" label="Sede" required>
                         </VSelect>
                     </VCol>
@@ -177,6 +177,8 @@ const mostrarSn2 = computed(() => {
             visible_sn2 = false;
         } else if (tipoServicio.value === 'Internet' && tipoEquipo.value === 'Vsol') {
             visible_sn2 = true;
+        } else if (tipoServicio.value === 'Internet' && tipoEquipo.value === 'Simple') {
+            visible_sn2 = false;
         } else if (tipoServicio.value === 'Duo' && tipoEquipo.value === 'Simple') {
             visible_sn2 = false;
         } else if (tipoServicio.value === 'Duo' && tipoEquipo.value === 'Vsol') {
@@ -188,6 +190,16 @@ const mostrarSn2 = computed(() => {
 })
 
 watch(mostrarSn2, visible_sn2 => { if (!visible_sn2) sn2.value = '' })
+
+const autoselecionequipo = computed(() => {
+    if (sede.value === 'comas') {
+        tipoEquipo.value = 'Simple';
+    } else if (sede.value === 'ñaña') {
+        tipoEquipo.value = 'Simple';
+    } else {
+        tipoEquipo.value = null;
+    }
+})
 
 const consultar_pon_sn = async () => {
     if (!sn1.value || !abonado.value || !sede.value) {
@@ -351,8 +363,8 @@ const registrarOnu = async () => {
         estado: "realizado",
         comentario_tecnico: "",
         operador: operador.value,
-        vlan : vlanSeleccionada.value,
-        speed : speed.value,
+        vlan: vlanSeleccionada.value,
+        speed: speed.value,
         userppoe: ppoe.value,
     }
 
@@ -416,35 +428,30 @@ const registrar_en_bd = async (payload) => {
 
 
 const limpiarFormulario = () => {
-  sede.value = ''
-  tipoAlta.value = ''
-  tipoServicio.value = ''
-  tipoEquipo.value = ''
-  abonado.value = ''
-  ppoe.value = ''
-  sn1.value = ''
-  sn2.value = ''
-  caja.value = ''
-  borne.value = ''
-  precinto.value = ''
-  coordenadas.value = ''
-  pon.value = ''
-  olt_id.value = ''
-  tarjeta.value = ''
-  zona.value = ''
-  speed.value = ''
-  vlandisponibles.value = []
-  vlanSeleccionada.value = ''
-  pon_type.value = ''
-  consultaont = false
-  mostrarChips.value = false
-  mostrar_mensaje_error.value = false
+    sede.value = null
+    tipoAlta.value = null
+    tipoServicio.value = null
+    tipoEquipo.value = null
+    abonado.value = null
+    ppoe.value = null
+    sn1.value = null
+    sn2.value = null
+    caja.value = null
+    borne.value = null
+    precinto.value = null
+    coordenadas.value = null
+    pon.value = null
+    olt_id.value = null
+    tarjeta.value = null
+    zona.value = null
+    speed.value = null
+    vlandisponibles.value = []
+    vlanSeleccionada.value = null
+    pon_type.value = null
+    consultaont = false
+    mostrarChips.value = false
+    mostrar_mensaje_error.value = false
 }
-
-
-
-
-
 
 // Acepta el v-model estándar
 const props = defineProps({
@@ -458,18 +465,12 @@ const dialogVisibleUpdate = (val) => {
     emit('update:modelValue', val)
 }
 
-
-
-
-
-
-
-
-
-
 </script>
 
-<style lang="scss">
+
+
+
+<style scoped>
 .stepper-content .card-list {
     --v-card-list-gap: 1rem;
 }

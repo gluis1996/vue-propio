@@ -14,6 +14,17 @@ const paginatedItems = computed(() => {
 
 const totalPages = computed(() => Math.ceil(desserts.value.length / itemsPerPage))
 
+const formatFecha = (fechaISO) => {
+  if (!fechaISO) return ''
+  return new Date(fechaISO).toLocaleString('es-PE', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
 const consuta_trabajos = async () => {
   try {
     const response = await $api('instalacion', {
@@ -25,7 +36,8 @@ const consuta_trabajos = async () => {
     console.log('Datos obtenidos:', response)
 
     // Asigna la data al array para mostrarla
-    desserts.value = Array.isArray(response) ? response : (response?.data || [])
+    let data = Array.isArray(response) ? response : (response?.data || [])
+    desserts.value = data.sort((a, b) => new Date(b.fecha_registro) - new Date(a.fecha_registro))
   } catch (err) {
     console.error(err)
   }
@@ -44,21 +56,18 @@ onMounted(() => {
       <tr>
         <th>id</th>
         <th>sede</th>
-        <th>tipo alta</th>
-        <th>tipo servicio</th>
-        <th>tipo equipo</th>
-        <th>pon sn 1</th>
-        <th>pon sn 2</th>
-        <th>codi abonado</th>
+        <th>alta</th>
+        <th>servicio</th>
+        <th>equipo</th>
+        <th>sn1</th>
+        <th>abona.</th>
         <th>cto</th>
-        <th>borne</th>
+        <th>B</th>
         <th>precinto</th>
         <th>latitud</th>
         <th>logintud</th>
         <th>estado</th>
-        <th>comentario tecnico</th>
         <th>fecha r.</th>
-        <th>tecnico</th>
         <th>operador</th>
       </tr>
     </thead>
@@ -70,7 +79,6 @@ onMounted(() => {
         <td>{{ item.tipo_servicio }}</td>
         <td>{{ item.tipo_equipo }}</td>
         <td>{{ item.pon_sn_1 }}</td>
-        <td>{{ item.pon_sn_2 }}</td>
         <td>{{ item.cod_abonado }}</td>
         <td>{{ item.cto }}</td>
         <td>{{ item.borne }}</td>
@@ -78,17 +86,11 @@ onMounted(() => {
         <td>{{ item.latitud }}</td>
         <td>{{ item.longitud }}</td>
         <td>{{ item.estado }}</td>
-        <td>{{ item.comentario_tecnico }}</td>
-        <td>{{ item.fecha_registro }}</td>
-        <td>{{ item.tecnico }}</td>
+        <td>{{ formatFecha(item.fecha_registro) }}</td>
         <td>{{ item.operador }}</td>
       </tr>
     </tbody>
   </VTable>
 
-  <VPagination
-    v-model="currentPage"
-    :length="totalPages"
-    rounded="circle"
-  />
+  <VPagination v-model="currentPage" :length="totalPages" rounded="circle" />
 </template>
